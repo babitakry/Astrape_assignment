@@ -1,63 +1,41 @@
-import { useEffect, useState } from 'react';
-import './App.css';
-import axios from 'axios';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import Signup from './components/Signup';
+import Login from './components/Login';
+import ItemList from './components/ItemList';
+import Cart from './components/Cart';
+import Home from './components/Home';  // Import Home component
 
-function App() {
-  const [jokes, setJokes] = useState([]);
-  const [news, setNews] = useState([]);
+export default function App() {
+    const isLoggedIn = !!localStorage.getItem('token');
 
-  useEffect(() => {
-    axios.get('/api/jokes')
-      .then((response) => {
-        setJokes(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching jokes:", error);
-      });
-  }, []);
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        window.location.reload();
+    };
 
-  useEffect(() => {
-    axios.get('/api/news')
-      .then((response) => {
-        setNews(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching news:", error);
-      });
-  }, []);
-
-  return (
-    <>
-      <h1>Full Stack Project</h1>
-      <div className="container">
-        
-        <div className="column">
-          <h2>JOKES ({jokes.length})</h2>
-          {
-            jokes?.map((joke) => (
-              <div key={joke.id} className="item">
-                <p className="title">{joke.title}</p>
-                <p className="content">{joke.content}</p>
-              </div>
-            ))
-          }
-        </div>
-
-        <div className="column">
-          <h2>NEWS ({news.length})</h2>
-          {
-            news?.map((newItem) => (
-              <div key={newItem.id} className="item">
-                <p className="title">{newItem.title}</p>
-                <p className="content">{newItem.content}</p>
-              </div>
-            ))
-          }
-        </div>
-
-      </div>
-    </>
-  );
+    return (
+        <Router>
+            <nav className="bg-gray-800 text-white p-4 flex gap-4 items-center">
+                <Link to="/" className="hover:underline">Home</Link>
+                <Link to="/items" className="hover:underline">Items</Link>
+                <Link to="/cart" className="hover:underline">Cart</Link>
+                {!isLoggedIn && <>
+                    <Link to="/signup" className="hover:underline">Signup</Link>
+                    <Link to="/login" className="hover:underline">Login</Link>
+                </>}
+                {isLoggedIn && (
+                    <button onClick={handleLogout} className="ml-auto bg-red-600 px-3 py-1 rounded hover:bg-red-700">Logout</button>
+                )}
+            </nav>
+            <div className="container mx-auto p-4">
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/signup" element={<Signup />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/items" element={<ItemList />} />
+                    <Route path="/cart" element={<Cart />} />
+                </Routes>
+            </div>
+        </Router>
+    );
 }
-
-export default App;
