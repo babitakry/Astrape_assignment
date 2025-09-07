@@ -4,6 +4,9 @@ import cors from 'cors';
 
 // Routes
 import authRoutes from './src/routes/auth.js';
+import itemRoutes from './src/routes/items.js';
+import cartRoutes from './src/routes/cart.js';
+
 import connectDB from './src/database/db_connection.js';
 
 dotenv.config();
@@ -25,8 +28,8 @@ app.get("/",(req, res)=>{
    res.send("Home page !!!!!");
 })
 app.use('/api/auth', authRoutes);
-// app.use('/api/items', itemRoutes);
-// app.use('/api/cart', cartRoutes);
+app.use('/api/items', itemRoutes);
+app.use('/api/cart', cartRoutes);
 
 
 const PORT = process.env.PORT || 3000;

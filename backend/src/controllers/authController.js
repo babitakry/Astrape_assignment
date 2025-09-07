@@ -14,7 +14,7 @@ export const signup = async (req, res) => {
                     message: 'User already exists' 
             });
 
-        const hashedPassword = await bcrypt.hash(password, 10); // install bcrypt
+        const hashedPassword = await bcrypt.hash(password, 10);
         console.log("Hashed password: ", hashedPassword);
 
         user = new User({
