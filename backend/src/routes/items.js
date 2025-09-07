@@ -5,7 +5,7 @@ import { createItem, getItems, updateItem, deleteItem } from '../controllers/ite
 const router = express.Router();
 
 router.post('/', auth, createItem);
-router.get('/', auth, getItems);
+router.get('/',getItems);
 router.put('/:id', auth, updateItem);
 router.delete('/:id', auth, deleteItem);
 

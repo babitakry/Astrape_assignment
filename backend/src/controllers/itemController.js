@@ -32,7 +32,7 @@ export const getItems = async (req, res) => {
                 filter.price.$lte = Number(priceMax);
         }
         if (category) {
-            filter.category = category;
+            filter.category = category?.toLowerCase();
         }
 
         const items = await Item.find(filter);
